@@ -281,6 +281,7 @@ class Screen2 extends StatelessWidget {
                 StoryCard(
                   storyImage: "img2",
                   storyLabel: "karennne",
+                  isLive: true,
                 ),
                 SizedBox(width: 26),
                 StoryCard(
@@ -511,52 +512,92 @@ class Screen2 extends StatelessWidget {
 class StoryCard extends StatelessWidget {
   final String? storyImage;
   final String? storyLabel;
+  final bool isLive;
 
   const StoryCard({
     super.key,
     this.storyImage,
     this.storyLabel,
+    this.isLive = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          height: 62,
-          width: 62,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              style: BorderStyle.none,
-              width: 3,
-            ),
-            gradient: const LinearGradient(
-              colors: [
-                Color(0xffFBAA47),
-                Color(0xffD91A46),
-                Color(0xffA60F93),
-              ],
-            ),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(3),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(45),
-              child: Image.asset(
-                storyImage != null
-                    ? "assets/images/$storyImage.png"
-                    : "assets/images/img1.png",
-                fit: BoxFit.fill,
-                height: 56,
-                width: 56,
+        Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              height: 62,
+              width: 62,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  style: BorderStyle.none,
+                  width: 3,
+                ),
+                gradient: const LinearGradient(
+                  colors: [
+                    Color(0xffFBAA47),
+                    Color(0xffD91A46),
+                    Color(0xffA60F93),
+                  ],
+                ),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(3),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(45),
+                  child: Image.asset(
+                    storyImage != null
+                        ? "assets/images/$storyImage.png"
+                        : "assets/images/img1.png",
+                    fit: BoxFit.fill,
+                    height: 56,
+                    width: 56,
+                  ),
+                ),
               ),
             ),
-          ),
+            if (isLive)
+              Positioned(
+                bottom: -5,
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 16,
+                  width: 26,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment(0.81, -0.59),
+                      end: Alignment(-0.81, 0.59),
+                      colors: [
+                        Color(0xFFC90083),
+                        Color(0xFFD22463),
+                        Color(0xFFE10038)
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(3),
+                    border: Border.all(
+                      width: 1,
+                      color: const Color(0xFFFEFEFE),
+                    ),
+                  ),
+                  child: const Text(
+                    "LIVE",
+                    style: TextStyle(
+                        color: Color(0xFFFEFEFE),
+                        fontSize: 8,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ),
+          ],
         ),
         Text(
           storyLabel ?? "Your Story",
